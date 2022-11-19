@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 public class OrderController {
 
+    @Autowired
+    OrderService orderService;
 
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
-
+        orderService.addOrder(order);
         return new ResponseEntity<>("New order added successfully", HttpStatus.CREATED);
     }
 
@@ -41,11 +43,9 @@ public class OrderController {
 
     @GetMapping("/get-order-by-id/{orderId}")
     public ResponseEntity<Order> getOrderById(@PathVariable String orderId){
-
-        Order order= null;
         //order should be returned with an orderId.
-
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        Order order= orderService.getOrderById(orderId);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @GetMapping("/get-partner-by-id/{partnerId}")
